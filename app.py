@@ -6,9 +6,7 @@ flask_app = Flask(__name__)
 
 def init_app(app):
     register_blueprints(app)
-
-
-
+    
 
 init_app(flask_app)
 

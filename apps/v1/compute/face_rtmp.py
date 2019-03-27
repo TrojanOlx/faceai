@@ -13,15 +13,14 @@ detection_path = "./apps/v1/compute/model/detection_models/haarcascade_frontalfa
 face_detection =cv2.CascadeClassifier(detection_path)
 
 
-rtmpdist={}
-
-
-def cs(index,url):
-    print("{}{}".format(index,url))
+rtmpList=[]
 
 
 def Tortmp(index,url):
-        print(url+"\n")
+        """
+            创建一个推送流
+        """
+        # print(url+"\n")
         camera=cv2.VideoCapture(index)
         # 视频属性
         size = (int(camera.get(cv2.CAP_PROP_FRAME_WIDTH)), int(camera.get(cv2.CAP_PROP_FRAME_HEIGHT)))
@@ -65,12 +64,37 @@ def Tortmp(index,url):
 
 class FaceRtmpOut:
     def initRtmp(self,rtmpurl):
+        """
+            根据rtmp初始化进程
+        """
         uid="".join(random.sample(string.ascii_letters+string.digits,6))
         url=rtmpUrl+uid
         p=Process(target=Tortmp,args=(rtmpurl,url,))
         p.start()
-        rtmpdist[rtmpurl]=p
+        rtmpList.append({
+            "input":rtmpList,
+            "uid":uid,
+            "process":p
+        })
         return url
+
+    def getRmtp(self,rtmpUrl):
+        """
+            根据rtmp获取uid
+        """
+        for item in rtmpList:
+            if item["input"]==rtmpList :
+                return item["uid"]
+        return None
+
     def removeRtmp(self,rtmpUrl):
-        rtmpdist[rtmpUrl].terminate()
-        del rtmpdist[rtmpUrl]
+        # rtmpdist[rtmpUrl].terminate()
+        """
+            根据rtmp删除进程
+        """
+        for item in rtmpList:
+            if item["input"]==rtmpList :
+                item["process"].terminate()
+                rtmpList.remove(item)
+                return True
+        return False

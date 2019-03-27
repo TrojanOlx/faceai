@@ -49,7 +49,6 @@ class FaceContrast(Resource):
         return make_result(data=data)
 
 
-
 class FaceRetrieve(Resource):
     def get(self):
         return make_result(data={})
@@ -67,10 +66,14 @@ class FaceRetrieve(Resource):
         return make_result(data=data)
 
 
-
 class FaceRtmp(Resource):
     def get(self):
-        return ""
+        rtmp = request.args.get("rtmp")
+        uid = face_rtmpOut.getRmtp(rtmp)
+        data={
+            "urll":uid
+        }
+        return make_result(data=data)
 
     def post(self):
         json_data=request.get_json(force=True)
@@ -78,6 +81,15 @@ class FaceRtmp(Resource):
         url = face_rtmpOut.initRtmp(rtmpurl)
         data={
             "url":url
+        }
+        return make_result(data=data)
+
+    def delete(self):
+        json_data=request.get_json(force=True)
+        rtmpurl=json_data['rtmp']
+        flag=face_rtmpOut.removeRtmp(rtmpurl)
+        data={
+            "flag":flag
         }
         return make_result(data=data)
 

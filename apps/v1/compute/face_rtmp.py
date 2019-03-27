@@ -10,6 +10,7 @@ import threading
 rtmpUrl='rtmp://127.0.0.1:1935/live/'
 detection_path = "./apps/v1/compute/model/detection_models/haarcascade_frontalface_default.xml"
 
+# 读取
 face_detection =cv2.CascadeClassifier(detection_path)
 
 
@@ -54,7 +55,7 @@ def Tortmp(index,url):
                 continue
             gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             #rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
+            # 人脸检测
             faces=face_detection.detectMultiScale(gray_image,1.3,5)
             for face_coordinates in faces:
                 x, y, width, height = face_coordinates

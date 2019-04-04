@@ -4,6 +4,7 @@ from multiprocessing import Process
 import cv2.cv2 as cv2
 import subprocess as sp
 import threading
+from .comm import drawImg
 
 # push rtmp url
 
@@ -15,6 +16,7 @@ face_detection =cv2.CascadeClassifier(detection_path)
 
 
 rtmpList=[]
+
 
 
 def Tortmp(index,url):
@@ -46,6 +48,7 @@ def Tortmp(index,url):
 
         pipe = sp.Popen(command, stdin=sp.PIPE)
 
+        draw =drawImg()
         count=0
         while True:
             ret, frame = camera.read() # 逐帧采集视频流
@@ -53,14 +56,16 @@ def Tortmp(index,url):
                 count+=1
                 if count>60:break
                 continue
-            gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            #rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            # 人脸检测
-            faces=face_detection.detectMultiScale(gray_image,1.3,5)
-            for face_coordinates in faces:
-                x, y, width, height = face_coordinates
-                cv2.rectangle(frame, (x ,y ), (x + width , y + height), (255,0,0), 2)
+            # gray_image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # #rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # # 人脸检测
+            # faces=face_detection.detectMultiScale(gray_image,1.3,5)
+            # for face_coordinates in faces:
+            #     x, y, width, height = face_coordinates
+            #     cv2.rectangle(frame, (x ,y ), (x + width , y + height), (255,0,0), 2)
             
+            frame = draw.Draw(frame)
+
             pipe.stdin.write(frame.tostring())  # 存入管道
 
 class FaceRtmpOut:

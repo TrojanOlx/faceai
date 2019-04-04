@@ -1,4 +1,4 @@
-#!/home/trojan/workface/faceapi/venv/bin/python
+#!/home/trojan/workface/faceapi/faceai/venv/bin/python
 
 import sys
 import getopt

@@ -140,7 +140,7 @@ class FaceRecognition:
                 1, d.bottom() + 1, d.width(), d.height()
             detectorlist.append(
                 {
-                    "similarity": goal,
+                    "similarity": 1-goal,
                     "coordinate": {
                         "x1": x1,
                         "y1": y1,
@@ -151,3 +151,25 @@ class FaceRecognition:
                     }
                 })
         return coordinate,detectorlist
+
+    def score_one(self,url_img):
+        data, detector = self.face_detection_one(url_img)
+        goal=0
+        detectorlist = []
+        for i, d in enumerate(detector):
+            d = d[0]
+            x1, y1, x2, y2, w, h = d.left(), d.top(), d.right() + \
+                1, d.bottom() + 1, d.width(), d.height()
+            detectorlist.append({
+                "x1": x1,
+                "y1": y1,
+                "x2": x2,
+                "y2": y2,
+                "w": w,
+                "h": h
+            })
+        if len(data)>=2:
+            goal = self.dist_o(data[0], data[1])
+
+        return 1-goal, detectorlist
+            

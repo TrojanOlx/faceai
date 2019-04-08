@@ -11,8 +11,6 @@ face_rtmpOut=FaceRtmpOut()
 
 
 
-
-
 class FaceContrast(Resource):
     def get(self):
         data = {
